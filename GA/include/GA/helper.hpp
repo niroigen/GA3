@@ -41,5 +41,5 @@ struct GaHelper
     static bool compareIndividual(const Individual*, const Individual*);
     void attemptRules(Individual**, int);
     static void performRule(Individual*, std::uint8_t, std::uint8_t, std::uint8_t);
-    static std::string getWindow(int, const std::string&);
+    static std::string getWindow(int, const unsigned char*);
 };

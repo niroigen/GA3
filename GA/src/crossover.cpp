@@ -1,7 +1,7 @@
 #include "GA/crossover.hpp"
 
 void uniformCrossover(Individual *offspring1, Individual *offspring2,
-                      std::uniform_int_distribution<>& distr)
+                      std::uniform_real_distribution<>& distr)
 {
     const int size = 512;
     int crossover_arr[size];

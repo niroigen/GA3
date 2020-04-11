@@ -36,7 +36,7 @@ Individual::Individual(const Individual& individual)
     {
         this->initialState[i] = individual.initialState[i];
         this->goalState[i] = individual.goalState[i];
-        this->currentState[i] = individual.initialState[i];
+        this->currentState[i] = individual.currentState[i];
     }
 
     fitness = individual.fitness;
@@ -55,7 +55,7 @@ Individual& Individual::operator=(const Individual& individual)
         {
             this->initialState[i] = individual.initialState[i];
             this->goalState[i] = individual.goalState[i];
-            this->currentState[i] = individual.initialState[i];
+            this->currentState[i] = individual.currentState[i];
         }
     }
     return *this;

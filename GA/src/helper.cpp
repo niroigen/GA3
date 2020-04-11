@@ -81,7 +81,7 @@ void GaHelper::createOffsprings(Individual** offsprings, Individual** matingPool
 
     std::uniform_real_distribution<> dist(0, 1);
     
-    std::uniform_int_distribution<> distr(0, 511);
+    std::uniform_int_distribution<> distr(0, 512);
 
     while(i < LAMBDA)
     {
@@ -117,23 +117,33 @@ void GaHelper::performMutation(Individual *offspring)
     randomResetting(offspring, MUTATION_RATE);
 }
 
-std::string GaHelper::getWindow(int startIdx, const std::string& currentState)
+char toChar(const unsigned char* currentState, int idx)
+{
+    return (char) (currentState[idx] + 48);
+}
+
+std::string GaHelper::getWindow(int startIdx, const unsigned char* currentState)
 {
     std::string res(9,'0');
 
-    for (int i = 0; i < 9; i++)
-    {
-        res[i] = currentState[(startIdx + i) % currentState.length()];
-    }
+    res[0] = toChar(currentState, startIdx);
+    res[1] = toChar(currentState, (startIdx + 1) % (256*256));
+    res[2] = toChar(currentState, (startIdx + 2) % (256*256));
+    res[3] = toChar(currentState, (256 + startIdx) % (256*256));
+    res[4] = toChar(currentState, (256 + startIdx + 1) % (256*256));
+    res[5] = toChar(currentState, (256 + startIdx + 2) % (256*256));
+    res[6] = toChar(currentState, (512 + startIdx) % (256*256));
+    res[7] = toChar(currentState, (512 + startIdx + 1) % (256*256));
+    res[8] = toChar(currentState, (512 + startIdx + 2) % (256*256));
 
     return res;
 }
 
-bool isGoalStateEqualToCurrentState(unsigned char* currentState, std::string& goalState)
+bool isGoalStateEqualToCurrentState(unsigned char* currentState, unsigned char* goalState)
 {
     for (int i = 0; i < 256*256; i++)
     {
-        if ((char) (currentState[i] + 48) != goalState[i]) return false;
+        if (currentState[i] != goalState[i]) return false;
     }
 
     DEBUG("WOWWW");
@@ -145,33 +155,29 @@ void GaHelper::attemptRules(Individual** population, int size)
 {
     bool solutionFound = false;
     
-    std::string goalState = population[0]->getGoalState();
-
     for (int i = 0; i < size && !solutionFound; i++)
     {
         Individual* currentIndividual = population[i];
 
-        std::string cur = currentIndividual->getInitialState();
+        unsigned char nextState[256*256];
 
-        for (int test = 0; test < 10 && !solutionFound; test++)
+        for (int i = 0; i < 256*256; i++)
         {
-            std::string currentState = currentIndividual->getInitialState();
-            unsigned char nextState[256*256];
+            nextState[i] = currentIndividual->initialState[i];
+            currentIndividual->currentState[i] = currentIndividual->initialState[i];
+        }
 
-            for (int i = 0; i < 256*256; i++)
+        for (int test = 0; test < 1 && !solutionFound; test++)
+        {
+            for (int startIdx = 0; startIdx < 256*256 && !solutionFound; startIdx++)
             {
-                nextState[i] = currentIndividual->initialState[i];
-            }
-
-            for (int startIdx = 0; startIdx < currentState.size() && !solutionFound; startIdx++)
-            {
-                std::string window = GaHelper::getWindow(startIdx, currentState);
+                std::string window = GaHelper::getWindow(startIdx, currentIndividual->currentState);
 
                 const int rule = std::stoi(window, nullptr, 2);
 
                 int rule_to_perform = currentIndividual->rules[rule];
 
-                int middleIdx = (startIdx + 4) % currentState.size();
+                int middleIdx = (256 + startIdx + 1) % (256*256);
 
                 switch(rule_to_perform)
                 {
@@ -183,9 +189,7 @@ void GaHelper::attemptRules(Individual** population, int size)
                     break;
                 }
 
-                // std::string nextStateStr = Individual::convertStateToString(nextState);
-
-                solutionFound = isGoalStateEqualToCurrentState(nextState, goalState);
+                solutionFound = isGoalStateEqualToCurrentState(nextState, population[0]->goalState);
 
                 if (solutionFound) 
                 {

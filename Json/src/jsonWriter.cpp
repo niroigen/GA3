@@ -5,10 +5,12 @@ void outputBestIndividual(Individual* bestIndividual)
 {
     std::string initialState = bestIndividual->getInitialState();
     std::string goalState = bestIndividual->getGoalState();
+    std::string currentState = bestIndividual->getCurrentState();
 
     Json::Value best;
     best["Initial State"] = initialState;
     best["Goal State"] = goalState;
+    best["Current State"] = currentState;
 
     best["rules"] = Json::Value(Json::arrayValue);
     Json::Value &rules = best["rules"];

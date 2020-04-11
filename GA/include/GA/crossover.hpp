@@ -5,5 +5,5 @@
 
 extern std::mt19937 eng;
 
-void uniformCrossover(Individual*, Individual*, std::uniform_int_distribution<>&);
+void uniformCrossover(Individual*, Individual*, std::uniform_real_distribution<>&);
 void twoPointCrossover(Individual*, Individual*, std::uniform_int_distribution<>&);

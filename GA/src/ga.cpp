@@ -47,9 +47,6 @@ void GA::run()
     DEBUG("Starting to initialize population")
     initializePopulation(population);
 
-    DEBUG("Attempting rules");
-    helper->attemptRules(population, NUM_INDIVIDUALS);
-
     DEBUG("Initialized population")
     helper->evaluatePopulation(population);
 

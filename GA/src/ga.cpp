@@ -59,7 +59,7 @@ void GA::run()
     DEBUG(bestIndividualInit->fitness);
     #endif
 
-    for (generation = 0; generation < 1000; generation++)
+    for (generation = 0; generation < 100; generation++)
     {
         // Selecting parents for next generation
         helper->selectParents(matingPool, population);
@@ -87,7 +87,7 @@ void GA::run()
 
         #if DEBUG_MODE
         Individual* bestIndividualInit = population[0];
-        DEBUG("BEST SO FAR " + std::to_string(bestIndividualInit->fitness));
+        DEBUG("Generation : " + std::to_string(generation) + " BEST SO FAR " + std::to_string(bestIndividualInit->fitness));
 
         if(bestIndividualInit->fitness == 0) break;
         #endif

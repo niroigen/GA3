@@ -22,8 +22,5 @@ void defaultFitnessFunction(Individual* individual)
         }
     }
 
-    DEBUG("Fitness is " + std::to_string(fitness));
-    WAIT;
-
     individual->fitness = fitness;
 }

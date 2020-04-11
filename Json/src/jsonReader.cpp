@@ -1,6 +1,6 @@
 #include "Json/jsonReader.hpp"
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
@@ -28,7 +28,6 @@ void initializePopulation(Individual** population) {
     }
 
     DEBUG("DONE");
-    WAIT;
 
     unsigned int rules[512];
 
@@ -40,8 +39,6 @@ void initializePopulation(Individual** population) {
             for (auto const& id : obj[i+2][j].getMemberNames())
             {
                 rule = obj[i+2][j][id].asInt();
-                DEBUG(id + ":" + std::to_string(rule));
-                WAIT;
             }
 
             rules[j] = rule;
@@ -53,5 +50,4 @@ void initializePopulation(Individual** population) {
     }
 
     DEBUG("DONE INITIALIZATION");
-    WAIT;
 }

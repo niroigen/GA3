@@ -47,6 +47,7 @@ void GA::run()
     DEBUG("Starting to initialize population")
     initializePopulation(population);
 
+    DEBUG("Attempting rules");
     helper->attemptRules(population, NUM_INDIVIDUALS);
 
     DEBUG("Initialized population")
@@ -66,6 +67,7 @@ void GA::run()
 
         helper->createOffsprings(offsprings, matingPool);
 
+        // Attempting rules
         helper->attemptRules(offsprings, LAMBDA);
 
         // Evaluating their fitness level
@@ -85,11 +87,7 @@ void GA::run()
 
         #if DEBUG_MODE
         Individual* bestIndividualInit = population[0];
-        DEBUG(bestIndividualInit->fitness);
-
-        std::string ans = bestIndividualInit->getCurrentState();
-
-        DEBUG(ans);
+        DEBUG("BEST SO FAR " + std::to_string(bestIndividualInit->fitness));
 
         if(bestIndividualInit->fitness == 0) break;
         #endif

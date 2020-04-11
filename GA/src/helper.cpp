@@ -173,24 +173,15 @@ void GaHelper::attemptRules(Individual** population, int size)
 
                 int rule_to_perform = currentIndividual->rules[rule];
 
-                if (nextState.size() == 0) break;
-
                 int middleIdx = (startIdx + 2) % currentState.size();
 
                 switch(rule_to_perform)
                 {
                     case 0:
-                    nextState[middleIdx][0] = "0";
+                    nextState[middleIdx] = 0;
                     break;
                     case 1:
-                    nextState[middleIdx][0] = "1";
-                    break;
-                    case 2:
-                    if (!nextState[middleIdx].empty()) nextState[middleIdx].erase(nextState[middleIdx].begin());
-                    break;
-                    case 3:
-                    char val = currentState[middleIdx];
-                    nextState[middleIdx].push_back(std::string(1,val));
+                    nextState[middleIdx] = 1;
                     break;
                 }
 
@@ -203,13 +194,13 @@ void GaHelper::attemptRules(Individual** population, int size)
 
                 if (solutionFound) 
                 {
-                    currentIndividual->currentState = nextState;
+                    currentIndividual->setCurrentState(nextState);
                     evaluateFitness(currentIndividual);
                     break;
                 }
             }
 
-            currentIndividual->currentState = nextState;
+            currentIndividual->setCurrentState(nextState);
         }
     }
 }

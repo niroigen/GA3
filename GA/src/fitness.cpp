@@ -12,46 +12,18 @@
 
 void defaultFitnessFunction(Individual* individual)
 {
-    std::string goalState = individual->getGoalState();
-    std::string currentState = individual->getCurrentState();
+    unsigned long fitness = 0;
 
-    int fitness_table[9][9] = {0};
-
-    for (int row = 0; row < 9; row++)
+    for (int i = 0; i < 256*256; i++)
     {
-        fitness_table[row][0] = row;
-    }
-
-    for (int col = 0; col < 9; col++)
-    {
-        fitness_table[0][col] = col;
-    }
-
-    for (int row = 0; row < 9; row++)
-    {
-        if (row - 1 >= int(individual->currentState.size()))
+        if (individual->currentState[i] != individual->goalState[i])
         {
-            fitness_table[8][8] = 10;
-            break;
-        }
-        for (int col = 0; col < 9; col++)
-        {
-            if (row != 0 && col != 0)
-            {
-                char val1 = currentState[row - 1];
-                char val2 = goalState[col - 1];
-                
-                if (val1 == val2)
-                {
-                    fitness_table[row][col] = fitness_table[row-1][col-1];
-                }
-                else
-                {
-                    fitness_table[row][col] = std::min({fitness_table[row-1][col] + 1, fitness_table[row][col-1] + 1, fitness_table[row-1][col-1] + 2});
-                }
-            }
+            fitness++;
         }
     }
-    
-    individual->fitness = fitness_table[8][8];
+
+    DEBUG("Fitness is " + std::to_string(fitness));
+    WAIT;
+
+    individual->fitness = fitness;
 }

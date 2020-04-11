@@ -4,43 +4,44 @@
 
 #if DEBUG_MODE
 #define DEBUG(x) std::cout << x << std::endl;
+#define WAIT std::cin.get();
 #else
 #define DEBUG(x)
+#define WAIT
 #endif
 
 void initializePopulation(Individual** population) {
-    ifstream ifs("automata-population.json");
+    ifstream ifs("CellularAutomata.json");
 
     Json::Reader reader;
     Json::Value obj;
     reader.parse(ifs, obj); // reader can also read strings
 
-    std::string initialStateStr = obj[0]["Initial State"].asString();
-    std::string goalStateStr = obj[1]["Goal State"].asString();
+    unsigned char initialState [256*256];
+    unsigned char goalState [256*256];
 
-    std::vector<std::vector<std::string>> initialState(8, std::vector<std::string>(1, "0"));
-    std::vector<std::vector<std::string>> goalState(8, std::vector<std::string>(1, "0"));
-
-    DEBUG("Starting to get all values");
-
-    for (int i = 0; i < 8; i++)
-    {
-        initialState[i][0] = initialStateStr[i];
-        goalState[i][0] = goalStateStr[i];
+    for (int i = 0; i < 256; i++) {
+        for (int j = 0; j < 256; j++) {
+            initialState[256 * i + j] = obj[0][i][j].asInt() > 0;
+            goalState[256 * i + j] = obj[1][i][j].asInt() > 0;
+        }
     }
 
-    DEBUG("Got all values");
+    DEBUG("DONE");
+    WAIT;
 
-    unsigned int rules[32];
+    unsigned int rules[512];
 
     for (int i = 0; i <  NUM_INDIVIDUALS; i++)
     {
-        for (int j = 0; j < 32; j++)
+        for (int j = 0; j < 512; j++)
         {
             int rule;
             for (auto const& id : obj[i+2][j].getMemberNames())
             {
                 rule = obj[i+2][j][id].asInt();
+                DEBUG(id + ":" + std::to_string(rule));
+                WAIT;
             }
 
             rules[j] = rule;
@@ -50,4 +51,7 @@ void initializePopulation(Individual** population) {
 
         population[i] = originalIndividual;
     }
+
+    DEBUG("DONE INITIALIZATION");
+    WAIT;
 }

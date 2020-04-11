@@ -6,17 +6,17 @@
 
 struct Individual
 {
-    unsigned int rules[32];
+    unsigned int rules[512];
     // TODO: change this to current state
-    std::vector<std::vector<std::string>> initialState;
+    unsigned char initialState[256*256];
 
     // TODO: change this to next state
-    std::vector<std::vector<std::string>> goalState;
-    std::vector<std::vector<std::string>> currentState;
-    float fitness = 0;
+    unsigned char goalState[256*256];
+    unsigned char currentState[256*256];
+    unsigned long fitness = 0;
 
     Individual() {}
-    Individual(unsigned int*, std::vector<std::vector<std::string>>, std::vector<std::vector<std::string>>);
+    Individual(unsigned int*, unsigned char*, unsigned char*);
 
     Individual(const Individual&);
     Individual& operator=(const Individual&);
@@ -25,5 +25,7 @@ struct Individual
     std::string getGoalState();
     std::string getCurrentState();
 
-    static std::string convertStateToString(std::vector<std::vector<std::string>>);
+    void setCurrentState(const unsigned char*);
+
+    static std::string convertStateToString(unsigned char*);
 };

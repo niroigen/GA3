@@ -13,7 +13,7 @@ void outputBestIndividual(Individual* bestIndividual)
     best["rules"] = Json::Value(Json::arrayValue);
     Json::Value &rules = best["rules"];
 
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 512; i++)
     {
         rules[i] = bestIndividual->rules[i];
     }

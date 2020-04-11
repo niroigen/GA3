@@ -8,27 +8,34 @@
 #define DEBUG(x)
 #endif
 
-Individual::Individual(unsigned int* rules, std::vector<std::vector<std::string>> initialState, std::vector<std::vector<std::string>> goalState)
-    : initialState(initialState), goalState(goalState), currentState(initialState)
+Individual::Individual(unsigned int* rules, unsigned char* initialState, unsigned char* goalState)
 {
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 512; i++)
     {
         this->rules[i] = rules[i];
+    }
+
+    for (int i = 0; i < 256*256; i++)
+    {
+        this->initialState[i] = initialState[i];
+        this->goalState[i] = goalState[i];
+        this->currentState[i] = initialState[i];
     }
 }
 
 Individual::Individual(const Individual& individual)
 {
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 512; i++)
     {
         this->rules[i] = individual.rules[i];
     }
 
-    initialState = individual.initialState;
-
-    goalState = individual.goalState;
-
-    currentState = individual.currentState;
+    for (int i = 0; i < 256*256; i++)
+    {
+        this->initialState[i] = initialState[i];
+        this->goalState[i] = goalState[i];
+        this->currentState[i] = initialState[i];
+    }
 
     fitness = individual.fitness;
 }
@@ -37,18 +44,17 @@ Individual& Individual::operator=(const Individual& individual)
 {
     if( this != &individual )
     {
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < 512; i++)
         {
             rules[i] = individual.rules[i];
         }
 
-        initialState = individual.initialState;
-
-        goalState = individual.goalState;
-
-        currentState = individual.currentState;
-
-        fitness = individual.fitness;
+        for (int i = 0; i < 256*256; i++)
+        {
+            this->initialState[i] = initialState[i];
+            this->goalState[i] = goalState[i];
+            this->currentState[i] = initialState[i];
+        }
     }
     return *this;
 }
@@ -68,17 +74,17 @@ std::string Individual::getGoalState()
     return convertStateToString(goalState);
 }
 
-std::string Individual::convertStateToString(std::vector<std::vector<std::string>> state)
+std::string Individual::convertStateToString(unsigned char* state)
 {
     std::string res = "";
 
-    for (int i = 0; i < state.size(); i++)
-    {
-        for (int j = 0; j < state[i].size(); j++)
-        {
-            res += state[i][j];
-        }
-    }
-
     return res;
+}
+
+void Individual::setCurrentState(const unsigned char* curr_state)
+{
+    for (int i = 0; i < 256*256; i++)
+    {
+        this->currentState[i] = curr_state[i];
+    }
 }

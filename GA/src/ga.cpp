@@ -56,7 +56,7 @@ void GA::run()
     DEBUG(bestIndividualInit->fitness);
     #endif
 
-    for (generation = 0; generation < 100; generation++)
+    for (generation = 0; generation < 200; generation++)
     {
         // Selecting parents for next generation
         helper->selectParents(matingPool, population);
@@ -93,11 +93,7 @@ void GA::run()
     Individual* bestIndividual = helper->findBestIndividual(population, NUM_INDIVIDUALS);
     std::cout << bestIndividual->fitness << ',' << std::flush;
 
-    std::string ans = bestIndividual->getCurrentState();
-    DEBUG(ans)
-
     DEBUG("Has taken " + std::to_string(generation) + " generations to complete")
-    WAIT;
 
     outputBestIndividual(bestIndividual);
 

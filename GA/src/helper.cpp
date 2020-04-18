@@ -167,39 +167,37 @@ void GaHelper::attemptRules(Individual** population, int size)
             currentIndividual->currentState[i] = currentIndividual->initialState[i];
         }
 
-        for (int test = 0; test < 1 && !solutionFound; test++)
+
+        for (int startIdx = 0; startIdx < 256*256 && !solutionFound; startIdx++)
         {
-            for (int startIdx = 0; startIdx < 256*256 && !solutionFound; startIdx++)
+            std::string window = GaHelper::getWindow(startIdx, currentIndividual->currentState);
+
+            const int rule = std::stoi(window, nullptr, 2);
+
+            int rule_to_perform = currentIndividual->rules[rule];
+
+            int middleIdx = (256 + startIdx + 1) % (256*256);
+
+            switch(rule_to_perform)
             {
-                std::string window = GaHelper::getWindow(startIdx, currentIndividual->currentState);
-
-                const int rule = std::stoi(window, nullptr, 2);
-
-                int rule_to_perform = currentIndividual->rules[rule];
-
-                int middleIdx = (256 + startIdx + 1) % (256*256);
-
-                switch(rule_to_perform)
-                {
-                    case 0:
-                    nextState[middleIdx] = 0;
-                    break;
-                    case 1:
-                    nextState[middleIdx] = 1;
-                    break;
-                }
-
-                solutionFound = isGoalStateEqualToCurrentState(nextState, population[0]->goalState);
-
-                if (solutionFound) 
-                {
-                    currentIndividual->setCurrentState(nextState);
-                    evaluateFitness(currentIndividual);
-                    break;
-                }
+                case 0:
+                nextState[middleIdx] = 0;
+                break;
+                case 1:
+                nextState[middleIdx] = 1;
+                break;
             }
 
-            currentIndividual->setCurrentState(nextState);
+            solutionFound = isGoalStateEqualToCurrentState(nextState, population[0]->goalState);
+
+            if (solutionFound)
+            {
+                currentIndividual->setCurrentState(nextState);
+                evaluateFitness(currentIndividual);
+                break;
+            }
         }
+
+        currentIndividual->setCurrentState(nextState);
     }
 }

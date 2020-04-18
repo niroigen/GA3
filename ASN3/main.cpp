@@ -11,7 +11,7 @@ int generation;
 
 int main()
 {
-    GA ga1(5, 36, 3, 0.4, 0.1);
+    GA ga1(5, 36, 3, 0.7, 0.01);
     ga1.run();
 
     // std::cin.get();

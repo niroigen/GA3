@@ -11,7 +11,7 @@
 #endif
 
 void initializePopulation(Individual** population) {
-    ifstream ifs("CellularAutomata.json");
+    ifstream ifs("CellularAutomataBONUS.json");
 
     Json::Reader reader;
     Json::Value obj;

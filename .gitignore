@@ -1,2 +1,9 @@
-build/
 .vscode/
+**/*/.DS_Store
+**/*/CMakeCache.txt
+**/*/*.cmake
+/octave-workspace
+*/CMakeFiles
+build/ASN3
+build/GA
+build/Json

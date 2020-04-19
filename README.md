@@ -31,11 +31,23 @@ To run the part 1 algorithm, you would have to go into the directory `build`
 Next you would need to build the project using CMAKE
 `cmake ..`
 
+
+
+### OPTIONAL STEP: TO RUN BONUS
+To run the bonus version you have to change the input file from `CellularAutomata.json` to `CellularAutomataBONUS.json`
+This has to be modified in the file `Json/src/jsonReader.cpp`
+Change line **14** from
+`ifstream ifs("CellularAutomata.json");`
+to
+`ifstream ifs("CellularAutomataBONUS.json");`
+
+
+
 ### Step 3: Create an executable for Part 1
 Now you would have to create the executable file
 `make`
 
-### Step 4: Run program
+### Step 4: Run program (NOT BONUS)
 `./ASN3/ASN3`
 
 ## View Results as an image (Optional)
@@ -56,5 +68,8 @@ Open a separate console that is on your local machine and not docker
 If you see the following, you can go to the next step
 `octave:1> `
 
-### Step3: Display image
+### Step 3: Head to the build directory
+This directory must contain the `test.dat` file
+
+### Step 4: Display image
 `im = dlmread("test.dat"); imshow(im)`
